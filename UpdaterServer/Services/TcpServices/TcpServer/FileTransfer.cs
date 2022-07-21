@@ -1,4 +1,4 @@
-﻿namespace PushFile.Messages.TcpServices.TcpServer
+﻿namespace UpdaterServer.Services.TcpServices.TcpServer
 {
 	public class FileTransfer : IDisposable
 	{

@@ -1,4 +1,4 @@
-﻿namespace PushFile.Messages.TcpServices
+﻿namespace UpdaterServer.Services.TcpServices
 {
 	public interface ITcpServerService
 	{

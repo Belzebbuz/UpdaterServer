@@ -1,14 +1,14 @@
 ﻿using BeetleX;
 using BeetleX.Buffers;
 using BeetleX.Clients;
-using PushFile.Messages;
+using PushFile.Messages.Infrastructure;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PushFile.Messages.TcpServices.TcpClient
+namespace UpdaterServer.Services.TcpServices.TcpClient
 {
 	public class TcpClientFileSender : ITcpClientFileSender
 	{
@@ -22,7 +22,7 @@ namespace PushFile.Messages.TcpServices.TcpClient
 
 		public void Send(string filePath)
 		{
-			var reader = new FileReader(filePath);
+			var reader = new FileReader(filePath,"mes", "1.0.0");
 			_tcpClient["file"] = reader;
 			var block = reader.Next();
 			block.Completed = OnCompleted;

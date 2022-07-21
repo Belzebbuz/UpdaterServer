@@ -1,7 +1,8 @@
 using BeetleX.FastHttpApi.Hosting;
-using PushFile.Messages.TcpServices;
-using PushFile.Messages.TcpServices.TcpClient;
-using UpdaterServer.Services.TcpServer;
+using Microsoft.EntityFrameworkCore;
+using UpdaterServer.Domain;
+using System.Linq;
+using UpdaterServer.Services.TcpServices;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,12 +13,21 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddSingleton<ITcpServerService, TcpServerService>();
-builder.Services.AddTransient<ITcpClientFileSender, TcpClientFileSender>();
+builder.Services.AddDbContext<AppDbContext>(options =>
+{
+	var connection = builder.Configuration.GetConnectionString("DefaultConnection");
+	options.UseSqlite(connection);
+});
+
 var app = builder.Build();
+app.Services.GetRequiredService<ITcpServerService>().Run();
+using (var scope = app.Services.CreateScope())
+{
+	
+	using var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+	await context.Database.MigrateAsync();
+}
 
-app.UseTcpServer();
-
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
 	app.UseSwagger();

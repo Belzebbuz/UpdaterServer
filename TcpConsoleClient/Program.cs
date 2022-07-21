@@ -1,13 +1,13 @@
 ﻿using BeetleX;
 using BeetleX.Buffers;
 using BeetleX.Clients;
-using PushFile.Messages;
+using PushFile.Messages.Infrastructure;
 using PushFile.Messages.TcpServices.TcpClient;
 using PushFile.Messages.TcpServices.TcpServer;
 using System.Collections.Concurrent;
 using System.Text;
 
-Console.ReadKey();
+//Console.ReadKey();
 BufferPool.BUFFER_SIZE = 1024 * 8;
 
 ConcurrentDictionary<string, FileTransfer> mFiles = new ConcurrentDictionary<string, FileTransfer>(StringComparer.OrdinalIgnoreCase);

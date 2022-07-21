@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UpdaterServer", "UpdaterSer
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PushFile.Messages", "PushFile.Messages\PushFile.Messages.csproj", "{7C5FD384-0489-4E24-9B6C-F1EE97858D5A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TcpConsoleClient", "TcpConsoleClient\TcpConsoleClient.csproj", "{F958DF35-4883-4864-A977-81E9F0BF9874}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TcpConsoleClient", "TcpConsoleClient\TcpConsoleClient.csproj", "{F958DF35-4883-4864-A977-81E9F0BF9874}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
