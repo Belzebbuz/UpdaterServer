@@ -1,5 +1,6 @@
 using BeetleX.FastHttpApi.Hosting;
-using UpdaterServer.Services.TcpClient;
+using PushFile.Messages.TcpServices;
+using PushFile.Messages.TcpServices.TcpClient;
 using UpdaterServer.Services.TcpServer;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -10,8 +11,8 @@ builder.Services.AddControllers();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddSingleton<TcpServerHandler>();
-builder.Services.AddSingleton<ITcpClientFileSender, TcpClientFileSender>();
+builder.Services.AddSingleton<ITcpServerService, TcpServerService>();
+builder.Services.AddTransient<ITcpClientFileSender, TcpClientFileSender>();
 var app = builder.Build();
 
 app.UseTcpServer();

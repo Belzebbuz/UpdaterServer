@@ -5,7 +5,9 @@ VisualStudioVersion = 17.2.32526.322
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UpdaterServer", "UpdaterServer\UpdaterServer.csproj", "{8E5946E8-1E79-40B2-8B25-B67B2D5AC4C0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PushFile.Messages", "PushFile.Messages\PushFile.Messages.csproj", "{7C5FD384-0489-4E24-9B6C-F1EE97858D5A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PushFile.Messages", "PushFile.Messages\PushFile.Messages.csproj", "{7C5FD384-0489-4E24-9B6C-F1EE97858D5A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TcpConsoleClient", "TcpConsoleClient\TcpConsoleClient.csproj", "{F958DF35-4883-4864-A977-81E9F0BF9874}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{7C5FD384-0489-4E24-9B6C-F1EE97858D5A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7C5FD384-0489-4E24-9B6C-F1EE97858D5A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7C5FD384-0489-4E24-9B6C-F1EE97858D5A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F958DF35-4883-4864-A977-81E9F0BF9874}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F958DF35-4883-4864-A977-81E9F0BF9874}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F958DF35-4883-4864-A977-81E9F0BF9874}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F958DF35-4883-4864-A977-81E9F0BF9874}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

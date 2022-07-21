@@ -1,10 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using PushFile.Messages.TcpServices.TcpClient;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using UpdaterServer.Services.TcpClient;
 
 namespace UpdaterServer.Controllers
 {
@@ -22,7 +22,7 @@ namespace UpdaterServer.Controllers
 		[HttpGet("{appName}")]
 		public async Task<string> CheckUpdateAsync(string appName)
 		{
-			await _tcpClient.Send(@"C:\tracex builds\1234234.zip");
+			await Task.Run(() => _tcpClient.Send(@"1234234.zip"));
 			return appName;
 		}
 	}

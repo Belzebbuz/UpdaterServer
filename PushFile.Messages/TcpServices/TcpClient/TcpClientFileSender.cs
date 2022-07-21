@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace UpdaterServer.Services.TcpClient
+namespace PushFile.Messages.TcpServices.TcpClient
 {
 	public class TcpClientFileSender : ITcpClientFileSender
 	{
@@ -17,35 +17,38 @@ namespace UpdaterServer.Services.TcpClient
 		public TcpClientFileSender()
 		{
 			BufferPool.BUFFER_SIZE = 1024 * 8;
-			_tcpClient = SocketFactory.CreateClient<AsyncTcpClient, ProtobufClientPacket>("localhost", 9090);
+			_tcpClient = SocketFactory.CreateClient<AsyncTcpClient, ProtobufClientPacket>("localhost", 9092);
 		}
 
-		public async Task Send(string filePath)
+		public void Send(string filePath)
 		{
 			var reader = new FileReader(filePath);
 			_tcpClient["file"] = reader;
 			var block = reader.Next();
 			block.Completed = OnCompleted;
-			await _tcpClient.Send(block);
+			_tcpClient.Send(block);
 		}
+
 		private void OnCompleted(FileContentBlock e)
 		{
-			var reader = (FileReader)_tcpClient["file"];
-			if (!reader.Completed)
+			Task.Run(() =>
 			{
-				Task.Run(() =>
+				var reader = (FileReader)_tcpClient["file"];
+				if (!reader.Completed)
 				{
-					var block = reader.Next();
-					block.Completed = OnCompleted;
-					_tcpClient.Send(block);
-				});
-			}
-			else
-			{
-				_tcpClient.DisConnect();
-			}
-
-			Console.WriteLine(reader.Index);
+					Task.Run(() =>
+					{
+						var block = reader.Next();
+						block.Completed = OnCompleted;
+						_tcpClient.Send(block);
+					});
+				}
+				else
+				{
+					_tcpClient.DisConnect();
+				}
+				Console.WriteLine(reader.Index);
+			});
 		}
 	}
 }
