@@ -6,12 +6,12 @@ using System.Collections.Concurrent;
 using System.Text;
 using UpdaterServer.Services.TcpServices.TcpServer;
 
-//Console.ReadKey();
+Console.ReadKey();
 BufferPool.BUFFER_SIZE = 1024 * 8;
 
-ConcurrentDictionary<string, FileTransfer> mFiles = new ConcurrentDictionary<string, FileTransfer>(StringComparer.OrdinalIgnoreCase);
+ConcurrentDictionary<string, FileTransfer?> mFiles = new ConcurrentDictionary<string, FileTransfer?>(StringComparer.OrdinalIgnoreCase);
 string _sourcePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "wd");
-var _tcpClient = SocketFactory.CreateClient<AsyncTcpClient, ProtobufClientPacket>("localhost", 9093);
+var _tcpClient = SocketFactory.CreateClient<AsyncTcpClient, ProtobufClientPacket>("217.28.220.129", 33286);
 
 _tcpClient.PacketReceive = (c, packet) =>
 {
@@ -22,7 +22,7 @@ void HandlePacketRecieve(object message)
 {
 	if (message is FileContentBlock block)
 	{
-		mFiles.TryGetValue(block.FileName, out FileTransfer value);
+		mFiles.TryGetValue(block.FileName, out FileTransfer? value);
 		if (block.Index == 0)
 		{
 			if (value != null)
@@ -34,7 +34,7 @@ void HandlePacketRecieve(object message)
 			value = new FileTransfer($"{_sourcePath}\\{block.FileName}");
 			mFiles[block.FileName] = value;
 		}
-		value.Stream.Write(block.Data, 0, block.Data.Length);
+		value?.Stream.Write(block.Data, 0, block.Data.Length);
 		if (block.Eof)
 		{
 			value.Dispose();
@@ -44,6 +44,6 @@ void HandlePacketRecieve(object message)
 	}
 }
 
-await _tcpClient.Send(new FileContentBlock() { Data = Encoding.UTF8.GetBytes("tracex mes")});
+await _tcpClient.Send(new FileContentBlock() { Data = Encoding.UTF8.GetBytes("mes")});
 
 Thread.Sleep(-1);

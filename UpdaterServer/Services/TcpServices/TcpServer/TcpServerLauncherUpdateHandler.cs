@@ -7,15 +7,19 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using UpdaterServer.Domain;
 
 namespace UpdaterServer.Services.TcpServices.TcpServer
 {
 	public class TcpServerLauncherUpdateHandler : ServerHandlerBase
 	{
-		public override void Connected(IServer server, ConnectedEventArgs e)
+		private readonly IServiceProvider _serviceProvider;
+
+		public TcpServerLauncherUpdateHandler(IServiceProvider serviceProvider)
 		{
-			base.Connected(server, e);
+			_serviceProvider = serviceProvider;
 		}
+
 		protected override void OnReceiveMessage(IServer server, BeetleX.ISession session, object message)
 		{
 			string serviceName = "";
@@ -23,8 +27,10 @@ namespace UpdaterServer.Services.TcpServices.TcpServer
 			{
 				serviceName = Encoding.UTF8.GetString(msg.Data);
 			}
-
-			var reader = new FileReader(@"1234234.zip", "mes");
+			using var scope = _serviceProvider.CreateScope();
+			using var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+			var file = context.ProjectAssemblies.FirstOrDefault(x => x.Name.Contains("mes"));
+			var reader = new FileReader(file.Path, file.Name);
 			server[$"file{session.ID}"] = reader;
 			var block = reader.Next();
 			block.Completed = (block) =>

@@ -19,7 +19,7 @@ namespace UpdaterServer.Controllers
 		[HttpGet]
 		public async Task<List<ProjectAssembly>> GetAllLastReleasesAsync()
 		{
-			var result = await _appDbContext.ProjectAssemblies.ToListAsync();
+			var result = await _appDbContext.ProjectAssemblies.OrderByDescending(x => x.ReleaseDate).ToListAsync();
 			return result.DistinctBy(x => x.Name).ToList();
 		}
 

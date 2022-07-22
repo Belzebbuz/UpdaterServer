@@ -25,7 +25,7 @@ namespace UpdaterServer.Services.TcpServices
 			_serverDownload.Options.BufferSize = 1024 * 8;
 			_serverDownload.Options.DefaultListen.Port = 9092;
 
-			_serverLauncherUpdate = SocketFactory.CreateTcpServer(new TcpServerLauncherUpdateHandler(), new ProtobufPacket());
+			_serverLauncherUpdate = SocketFactory.CreateTcpServer(new TcpServerLauncherUpdateHandler(serviceProvider), new ProtobufPacket());
 			_serverLauncherUpdate.Options.LogLevel = LogType.Warring;
 			_serverLauncherUpdate.Options.BufferSize = 1024 * 8;
 			_serverLauncherUpdate.Options.DefaultListen.Port = 9093;
