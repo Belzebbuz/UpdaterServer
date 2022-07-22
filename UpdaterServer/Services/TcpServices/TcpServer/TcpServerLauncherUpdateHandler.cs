@@ -24,7 +24,7 @@ namespace UpdaterServer.Services.TcpServices.TcpServer
 				serviceName = Encoding.UTF8.GetString(msg.Data);
 			}
 
-			var reader = new FileReader(@"1234234.zip", "mes", "1.0.0");
+			var reader = new FileReader(@"1234234.zip", "mes");
 			server[$"file{session.ID}"] = reader;
 			var block = reader.Next();
 			block.Completed = (block) =>

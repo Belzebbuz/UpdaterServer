@@ -45,7 +45,7 @@ namespace UpdaterServer.Services.TcpServices.TcpServer
 					mFiles.TryRemove(block.FileName, out value);
 					using var scope = _serviceProvider.CreateScope();
 					using var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-					context.ProjectAssemblies.Add(new ProjectAssembly { Name = block.AppName, Path = $"{_sourcePath}\\{block.FileName}", Version = block.Version });
+					context.ProjectAssemblies.Add(new ProjectAssembly { Name = block.AppName, Path = $"{_sourcePath}\\{block.FileName}"});
 					context.SaveChanges();
 				}
 			}

@@ -13,6 +13,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\PushFile.Messages\PushFile.Messages.csproj" />
+    <ProjectReference Include="..\UpdaterServer\UpdaterServer.csproj" />
   </ItemGroup>
 
 </Project>

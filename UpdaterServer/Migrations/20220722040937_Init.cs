@@ -16,7 +16,7 @@ namespace UpdaterServer.Migrations
                     Id = table.Column<Guid>(type: "TEXT", nullable: false),
                     Name = table.Column<string>(type: "TEXT", nullable: false),
                     Path = table.Column<string>(type: "TEXT", nullable: false),
-                    Version = table.Column<string>(type: "TEXT", nullable: false)
+                    ReleaseDate = table.Column<DateTime>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {

@@ -11,7 +11,7 @@ using UpdaterServer.Domain;
 namespace UpdaterServer.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20220721115253_Init")]
+    [Migration("20220722040937_Init")]
     partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -33,8 +33,7 @@ namespace UpdaterServer.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("Version")
-                        .IsRequired()
+                    b.Property<DateTime>("ReleaseDate")
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");

@@ -2,10 +2,9 @@
 using BeetleX.Buffers;
 using BeetleX.Clients;
 using PushFile.Messages.Infrastructure;
-using PushFile.Messages.TcpServices.TcpClient;
-using PushFile.Messages.TcpServices.TcpServer;
 using System.Collections.Concurrent;
 using System.Text;
+using UpdaterServer.Services.TcpServices.TcpServer;
 
 //Console.ReadKey();
 BufferPool.BUFFER_SIZE = 1024 * 8;

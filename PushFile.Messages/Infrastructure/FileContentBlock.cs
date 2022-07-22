@@ -23,8 +23,6 @@ namespace PushFile.Messages.Infrastructure
 		public byte[] Data { get; set; }
 		[ProtoMember(5)]
 		public string AppName { get; set; }
-		[ProtoMember(6)]
-		public string Version { get; set; }
 
 		public Action<FileContentBlock> Completed { get; set; }
 

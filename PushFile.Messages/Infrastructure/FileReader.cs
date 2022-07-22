@@ -9,11 +9,10 @@ namespace PushFile.Messages.Infrastructure
 {
 	public class FileReader : IDisposable
 	{
-		public FileReader(string file, string appName, string version)
+		public FileReader(string file, string appName)
 		{
 			mInfo = new FileInfo(file);
 			AppName = appName;
-			Version = version;
 			mPages = (int)(mInfo.Length / mSize);
 			if (mInfo.Length % mSize > 0)
 				mPages++;
@@ -23,7 +22,6 @@ namespace PushFile.Messages.Infrastructure
 		}
 
 		private string AppName;
-		private string Version;
 
 		private Stream mReader;
 
@@ -54,7 +52,6 @@ namespace PushFile.Messages.Infrastructure
 			FileContentBlock result = new FileContentBlock();
 			result.FileName = mInfo.Name;
 			result.AppName = AppName;
-			result.Version = Version;
 			byte[] data;
 			if (mIndex == mPages - 1)
 			{
