@@ -1,5 +1,6 @@
 ﻿using BeetleX;
 using BeetleX.EventArgs;
+using MediatR;
 using PushFile.Messages.Infrastructure;
 using System;
 using System.Collections.Concurrent;
@@ -16,20 +17,19 @@ namespace UpdaterServer.Services.TcpServices
 	{
 		private readonly IServer _serverDownload;
 		private readonly IServer _serverLauncherUpdate;
-		private readonly IServiceProvider _serviceProvider;
 
-		public TcpServerService(IServiceProvider serviceProvider)
+		public TcpServerService(ISender sender)
 		{
-			_serverDownload = SocketFactory.CreateTcpServer(new TcpServerDownloadHandler(serviceProvider), new ProtobufPacket());
+			_serverDownload = SocketFactory.CreateTcpServer(new TcpServerDownloadHandler(sender), new ProtobufPacket());
 			_serverDownload.Options.LogLevel = LogType.Warring;
 			_serverDownload.Options.BufferSize = 1024 * 8;
 			_serverDownload.Options.DefaultListen.Port = 9092;
 
-			_serverLauncherUpdate = SocketFactory.CreateTcpServer(new TcpServerLauncherUpdateHandler(serviceProvider), new ProtobufPacket());
+			_serverLauncherUpdate = SocketFactory.CreateTcpServer(new TcpServerLauncherUpdateHandler(sender), new ProtobufPacket());
 			_serverLauncherUpdate.Options.LogLevel = LogType.Warring;
 			_serverLauncherUpdate.Options.BufferSize = 1024 * 8;
 			_serverLauncherUpdate.Options.DefaultListen.Port = 9093;
-			_serviceProvider = serviceProvider;
+
 		}
 		public void Run()
 		{

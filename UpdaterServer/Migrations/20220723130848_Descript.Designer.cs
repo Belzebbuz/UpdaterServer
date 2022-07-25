@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using UpdaterServer.Domain;
 
@@ -10,14 +11,15 @@ using UpdaterServer.Domain;
 namespace UpdaterServer.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220723130848_Descript")]
+    partial class Descript
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "6.0.7");
 
-            modelBuilder.Entity("UpdaterServer.Domain.Enties.Project", b =>
+            modelBuilder.Entity("UpdaterServer.Domain.Enties.App", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -27,20 +29,13 @@ namespace UpdaterServer.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("ExeFile")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<bool>("IsWinService")
-                        .HasColumnType("INTEGER");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Projects");
+                    b.ToTable("Apps");
                 });
 
             modelBuilder.Entity("UpdaterServer.Domain.Enties.ReleaseAssembly", b =>
@@ -71,16 +66,16 @@ namespace UpdaterServer.Migrations
 
             modelBuilder.Entity("UpdaterServer.Domain.Enties.ReleaseAssembly", b =>
                 {
-                    b.HasOne("UpdaterServer.Domain.Enties.Project", "Project")
+                    b.HasOne("UpdaterServer.Domain.Enties.App", "App")
                         .WithMany("ReleaseAssemblies")
                         .HasForeignKey("ReleaseAssemblyId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Project");
+                    b.Navigation("App");
                 });
 
-            modelBuilder.Entity("UpdaterServer.Domain.Enties.Project", b =>
+            modelBuilder.Entity("UpdaterServer.Domain.Enties.App", b =>
                 {
                     b.Navigation("ReleaseAssemblies");
                 });

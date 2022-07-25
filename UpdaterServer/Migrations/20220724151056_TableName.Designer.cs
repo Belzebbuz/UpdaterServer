@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using UpdaterServer.Domain;
 
@@ -10,9 +11,10 @@ using UpdaterServer.Domain;
 namespace UpdaterServer.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220724151056_TableName")]
+    partial class TableName
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "6.0.7");
@@ -71,13 +73,13 @@ namespace UpdaterServer.Migrations
 
             modelBuilder.Entity("UpdaterServer.Domain.Enties.ReleaseAssembly", b =>
                 {
-                    b.HasOne("UpdaterServer.Domain.Enties.Project", "Project")
+                    b.HasOne("UpdaterServer.Domain.Enties.Project", "App")
                         .WithMany("ReleaseAssemblies")
                         .HasForeignKey("ReleaseAssemblyId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Project");
+                    b.Navigation("App");
                 });
 
             modelBuilder.Entity("UpdaterServer.Domain.Enties.Project", b =>

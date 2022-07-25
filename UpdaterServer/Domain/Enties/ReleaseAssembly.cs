@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 
 namespace UpdaterServer.Domain.Enties
 {
-	public class ProjectAssembly
+	public class ReleaseAssembly
 	{
 		public Guid Id { get; set; }
-		public string Name { get; set; }
 		public string Path { get; set; }
-		public DateTime ReleaseDate { get; set; } = DateTime.Now;
-		
+		public DateTime ReleaseDate { get; set; }
+		public string? PatchNote { get; set; }
+		public virtual Project Project { get; set; }
 	}
 }

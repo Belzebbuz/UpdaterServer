@@ -15,7 +15,8 @@ namespace UpdaterServer.Domain
 		{
 
 		}
-		public DbSet<ProjectAssembly> ProjectAssemblies => Set<ProjectAssembly>();
+		public DbSet<Project> Projects => Set<Project>();
+		public DbSet<ReleaseAssembly> ReleaseAssemblies => Set<ReleaseAssembly>();
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
 			base.OnModelCreating(modelBuilder);

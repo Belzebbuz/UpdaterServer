@@ -22,7 +22,7 @@ namespace UpdaterServer.Services.TcpServices.TcpClient
 
 		public void Send(string filePath)
 		{
-			var reader = new FileReader(filePath,"mes");
+			var reader = new FileReader(filePath, Guid.NewGuid());
 			_tcpClient["file"] = reader;
 			var block = reader.Next();
 			block.Completed = OnCompleted;

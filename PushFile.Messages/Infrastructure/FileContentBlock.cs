@@ -22,7 +22,7 @@ namespace PushFile.Messages.Infrastructure
 		[ProtoMember(4)]
 		public byte[] Data { get; set; }
 		[ProtoMember(5)]
-		public string AppName { get; set; }
+		public Guid AppId { get; set; }
 
 		public Action<FileContentBlock> Completed { get; set; }
 

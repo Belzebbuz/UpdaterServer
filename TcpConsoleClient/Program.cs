@@ -6,12 +6,13 @@ using System.Collections.Concurrent;
 using System.Text;
 using UpdaterServer.Services.TcpServices.TcpServer;
 
-Console.ReadKey();
+Console.WriteLine("Guid приложения: ");
+Guid guid = Guid.Parse(Console.ReadLine());
 BufferPool.BUFFER_SIZE = 1024 * 8;
 
 ConcurrentDictionary<string, FileTransfer?> mFiles = new ConcurrentDictionary<string, FileTransfer?>(StringComparer.OrdinalIgnoreCase);
 string _sourcePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "wd");
-var _tcpClient = SocketFactory.CreateClient<AsyncTcpClient, ProtobufClientPacket>("217.28.220.129", 33286);
+var _tcpClient = SocketFactory.CreateClient<AsyncTcpClient, ProtobufClientPacket>("localhost", 9093);//("217.28.220.129", 33286);
 
 _tcpClient.PacketReceive = (c, packet) =>
 {
@@ -44,6 +45,6 @@ void HandlePacketRecieve(object message)
 	}
 }
 
-await _tcpClient.Send(new FileContentBlock() { Data = Encoding.UTF8.GetBytes("mes")});
+await _tcpClient.Send(new FileContentBlock() { AppId =  guid});
 
 Thread.Sleep(-1);
