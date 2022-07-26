@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace UpdaterServer.Domain.Enties
 {
-	public class ReleaseAssembly
+	public class ReleaseAssembly : BaseEntity
 	{
 		public Guid Id { get; set; }
 		public string Path { get; set; }

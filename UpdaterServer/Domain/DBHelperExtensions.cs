@@ -10,9 +10,9 @@ namespace UpdaterServer.Domain
 {
 	public static class DBHelperExtensions
 	{
-		public static string CreateDbPath(this WebApplicationBuilder builder)
+		public static string CreateDbPath(this WebApplicationBuilder builder, string section)
 		{
-			var connection = builder.Configuration.GetConnectionString("DefaultConnection");
+			var connection = builder.Configuration.GetConnectionString(section);
 			var sqliteBuilder = new SqliteConnectionStringBuilder(connection);
 			sqliteBuilder.DataSource = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "appDB", sqliteBuilder.DataSource);
 			if (!Directory.Exists(Path.GetDirectoryName(sqliteBuilder.DataSource)))

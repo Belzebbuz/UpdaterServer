@@ -7,10 +7,11 @@ using System.Threading.Tasks;
 
 namespace UpdaterServer.Domain.Enties
 {
-	public class Project
+	public class Project : BaseEntity
 	{
 		public Guid Id { get; set; }
 		public string Name { get; set; }
+		public string Author { get; set; }
 		public string Description { get; set; }
 		public bool IsWinService { get; set; }
 		public string ExeFile { get; set; }
