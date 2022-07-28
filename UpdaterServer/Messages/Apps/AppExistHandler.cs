@@ -2,7 +2,7 @@
 
 namespace UpdaterServer.Messages.Apps;
 
-public class AppExistRequest : IRequest<bool>
+public class AppExistRequest : IRequest<Project>
 {
 	public Guid AppId { get; set; }
 
@@ -11,7 +11,7 @@ public class AppExistRequest : IRequest<bool>
 		AppId = appId;
 	}
 }
-public class AppExistHandler : IRequestHandler<AppExistRequest, bool>
+public class AppExistHandler : IRequestHandler<AppExistRequest, Project>
 {
 	private readonly IServiceProvider _serviceProvider;
 
@@ -19,10 +19,10 @@ public class AppExistHandler : IRequestHandler<AppExistRequest, bool>
 	{
 		_serviceProvider = serviceProvider;
 	}
-	public async Task<bool> Handle(AppExistRequest request, CancellationToken cancellationToken)
+	public async Task<Project> Handle(AppExistRequest request, CancellationToken cancellationToken)
 	{
 		using var scope = _serviceProvider.CreateScope();
 		using var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-		return await context.Projects.AnyAsync(x => x.Id == request.AppId);
+		return await context.Projects.FirstOrDefaultAsync(x => x.Id == request.AppId);
 	}
 }

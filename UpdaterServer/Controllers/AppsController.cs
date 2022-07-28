@@ -2,6 +2,8 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.StaticFiles;
+using System.Diagnostics;
+using System.IO.Compression;
 using System.Security.Claims;
 using UpdaterServer.Messages.Apps;
 using UpdaterServer.Messages.ReleaseAssemblies;
@@ -54,48 +56,8 @@ public class AppsController : BaseApiController
 		return Ok(Id);
 	}
 
-	[HttpPost("{id}/addRelease")]
-	[RequestFormLimits(MultipartBodyLengthLimit = 1_000_524_288_000)]
-	[RequestSizeLimit(1_000_524_288_000)]
-	[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin,Dev")]
-	public async Task<IActionResult> CreateNewReleaseAsync(Guid Id, [FromForm] IFormFile file)
-	{
-		var exist = await Mediator.Send(new AppExistRequest(Id));
-		if (!exist)
-			return NotFound($"Application with Id = {Id} not found");
-
-		string filePath = Path.Combine(ReleasesPath, $"{Id}{Path.GetExtension(file.FileName)}");
-		await using (var fs = System.IO.File.Create(filePath))
-		{
-			await file.CopyToAsync(fs);
-			await fs.FlushAsync();
-		}
-		var release = await Mediator.Send(new CreateReleaseAssemblyRequest(Id, filePath));
-		return Ok(release);
-	}
-
-	[HttpGet("downloadRelease/{id}")]
-	public async Task<IActionResult> DownloadLastRelease(Guid Id)
-	{
-		var release = await Mediator.Send(new GetLastAppsReleaseAssemblyRequest(Id));
-		if (release == null)
-			return NotFound();
-
-		if (!System.IO.File.Exists(release.Path))
-			return BadRequest();
-
-		var provider = new FileExtensionContentTypeProvider();
-		string contentType;
-		if (!provider.TryGetContentType(release.Path, out contentType))
-		{
-			contentType ??= "application/octet-stream";
-		}
-
-		FileStream fileStream = new FileStream(release.Path, FileMode.Open, FileAccess.Read);
-		return File(fileStream, contentType);
-	}
-
 	[HttpPut]
+	[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin,Dev")]
 	public async Task<IActionResult> UpdateAppInfoAsync(UpdateAppRequest request)
 	{
 		var newApp = await Mediator.Send(request);
@@ -105,10 +67,14 @@ public class AppsController : BaseApiController
 		return Ok();
 	}
 
-	[HttpDelete]
-	public async Task<IActionResult> DeleteAppAsync(DeleteAppRequest app)
+	[HttpDelete("{id:guid}")]
+	[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin,Dev")]
+	public async Task<IActionResult> DeleteAppAsync(Guid id)
 	{
-		await Mediator.Send(app);
-		return Ok();
+		var success = await Mediator.Send(new DeleteAppRequest(id));
+		if (success)
+			return Ok();
+		else
+			return BadRequest();
 	}
 }

@@ -15,6 +15,7 @@ namespace UpdaterServer.Domain.Enties
 		public string Description { get; set; }
 		public bool IsWinService { get; set; }
 		public string ExeFile { get; set; }
+		public string CurrentVersion { get; set; }
 
 		[ForeignKey("ReleaseAssemblyId")]
 		public virtual List<ReleaseAssembly>? ReleaseAssemblies { get; set; }

@@ -18,14 +18,16 @@ namespace UpdaterServer.Controllers
 		private readonly SignInManager<IdentityUser> _signInManager;
 		private readonly IConfiguration _configuration;
 		private readonly IdentityAppDbContext _context;
+		private readonly IHttpContextAccessor _httpContextAccessor;
 
 		public AccountsController(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager,
-			IConfiguration configuration, IdentityAppDbContext context)
+			IConfiguration configuration, IdentityAppDbContext context, IHttpContextAccessor httpContextAccessor)
 		{
 			_userManager = userManager;
 			_signInManager = signInManager;
 			_configuration = configuration;
 			_context = context;
+			_httpContextAccessor = httpContextAccessor;
 		}
 
 		[HttpGet("listUsers")]
@@ -50,7 +52,7 @@ namespace UpdaterServer.Controllers
 				{
 					await _userManager.AddToRoleAsync(user, "Admin");
 				}
-				return await BuildToken(userCredentials);
+				return await BuildToken(userCredentials.Email);
 			}
 			else
 			{
@@ -66,7 +68,7 @@ namespace UpdaterServer.Controllers
 				userCredentials.Password, isPersistent: false, lockoutOnFailure: false);
 			if (result.Succeeded)
 			{
-				return await BuildToken(userCredentials);
+				return await BuildToken(userCredentials.Email);
 			}
 			else
 			{
@@ -74,14 +76,15 @@ namespace UpdaterServer.Controllers
 			}
 		}
 
-		[HttpPost("makeAdmin")]
-		[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
-		public async Task<ActionResult> MakeAdmin([FromBody]string userId)
+		[HttpGet("getjwt")]
+		[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+		public async Task<AuthenticationResponse> GetJwtAsync()
 		{
-			var user = await _userManager.FindByIdAsync(userId);
-			await _userManager.AddToRoleAsync(user, "Admin");
-			return NoContent();
+			var user = _httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.Email);
+
+			return user != null ?  await BuildToken(user) : null;
 		}
+
 		[HttpGet("delete/{id}")]
 		[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
 		public async Task<IActionResult> DeleteUserAsync(string id)
@@ -119,14 +122,14 @@ namespace UpdaterServer.Controllers
 
 			return Ok();
 		}
-		private async Task<AuthenticationResponse> BuildToken(UserCredentials userCredentials)
+		private async Task<AuthenticationResponse> BuildToken(string email)
 		{
 			var claims = new List<Claim>()
 			{
-				new Claim(ClaimTypes.Email, userCredentials.Email)
+				new Claim(ClaimTypes.Email, email)
 			};
 
-			var user = await _userManager.FindByNameAsync(userCredentials.Email);
+			var user = await _userManager.FindByNameAsync(email);
 			var claimsDB = await _userManager.GetClaimsAsync(user);
 			var roles = await _userManager.GetRolesAsync(user);
 

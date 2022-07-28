@@ -1,10 +1,15 @@
 ﻿namespace UpdaterServer.Messages.Apps;
 
-public class DeleteAppRequest : IRequest
+public class DeleteAppRequest : IRequest<bool>
 {
 	public Guid Id { get; set; }
+
+	public DeleteAppRequest(Guid id)
+	{
+		Id = id;
+	}
 }
-public class DeleteAppHandler : IRequestHandler<DeleteAppRequest>
+public class DeleteAppHandler : IRequestHandler<DeleteAppRequest,bool>
 {
 	private readonly AppDbContext _appDbContext;
 
@@ -12,17 +17,18 @@ public class DeleteAppHandler : IRequestHandler<DeleteAppRequest>
 	{
 		_appDbContext = appDbContext;
 	}
-	public async Task<Unit> Handle(DeleteAppRequest request, CancellationToken cancellationToken)
+	public async Task<bool> Handle(DeleteAppRequest request, CancellationToken cancellationToken)
 	{
 		var app = await _appDbContext.Projects.FindAsync(request.Id);
 		if (app == null)
-			return new Unit();
+			return false;
 		foreach (var path in app.ReleaseAssemblies.Where(x => File.Exists(x.Path)).Select(x => x.Path))
 		{
 			File.Delete(path);
 		}
+		_appDbContext.ReleaseAssemblies.RemoveRange(app.ReleaseAssemblies);
 		_appDbContext.Projects.Remove(app);
 		await _appDbContext.SaveChangesAsync();
-		return new Unit();
+		return true;
 	}
 }

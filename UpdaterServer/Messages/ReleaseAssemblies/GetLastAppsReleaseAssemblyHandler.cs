@@ -24,8 +24,7 @@
 			var app = await context.Projects.FindAsync(request.Id);
 			if (app == null || !app.ReleaseAssemblies.Any())
 				return null;
-
-			return app.ReleaseAssemblies.OrderByDescending(x => x.ReleaseDate).First();
+			return app.ReleaseAssemblies.Where(x => x.Version == app.CurrentVersion).OrderByDescending(x => x.ReleaseDate).First();
 		}
 	}
 }

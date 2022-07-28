@@ -22,8 +22,8 @@ namespace UpdaterServer.Services.TcpServices.TcpServer
 		{
 			if (message is FileContentBlock block)
 			{
-				var appExist = _mediator.Send(new AppExistRequest(block.AppId)).Result;
-				if (!appExist || Path.GetExtension(block.FileName) != ".zip")
+				var project = _mediator.Send(new AppExistRequest(block.AppId)).Result;
+				if (project != null || Path.GetExtension(block.FileName) != ".zip")
 				{
 					session.Dispose();
 					return;
@@ -43,7 +43,7 @@ namespace UpdaterServer.Services.TcpServices.TcpServer
 				{
 					value?.Dispose();
 					mFiles.TryRemove(block.FileName, out value);
-					_mediator.Send(new CreateReleaseAssemblyRequest(block.AppId, path));
+					_mediator.Send(new CreateReleaseAssemblyRequest(block.AppId, path, Guid.NewGuid().ToString()));
 				}
 			}
 			base.OnReceiveMessage(server, session, message);
