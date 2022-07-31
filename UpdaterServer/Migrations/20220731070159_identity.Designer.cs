@@ -8,11 +8,11 @@ using UpdaterServer.Domain;
 
 #nullable disable
 
-namespace UpdaterServer.Migrations.IdentityAppDb
+namespace UpdaterServer.Migrations
 {
-    [DbContext(typeof(IdentityAppDbContext))]
-    [Migration("20220725104932_Identity")]
-    partial class Identity
+    [DbContext(typeof(AppDbContext))]
+    [Migration("20220731070159_identity")]
+    partial class identity
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -43,6 +43,29 @@ namespace UpdaterServer.Migrations.IdentityAppDb
                         .HasDatabaseName("RoleNameIndex");
 
                     b.ToTable("AspNetRoles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "0f6936eb-9561-4929-a033-d6745006fecf",
+                            ConcurrencyStamp = "459459c5-b98d-4709-a847-40e78e971bbb",
+                            Name = "Viewer",
+                            NormalizedName = "VIEWER"
+                        },
+                        new
+                        {
+                            Id = "7eab3ec6-64d9-468b-9258-bcaf236ab138",
+                            ConcurrencyStamp = "478fe6b8-3706-4aa4-bfc4-527514bc976d",
+                            Name = "Admin",
+                            NormalizedName = "ADMIN"
+                        },
+                        new
+                        {
+                            Id = "ff0828de-ac85-46d0-b29f-dd8a7966792a",
+                            ConcurrencyStamp = "35ed5bd1-4d73-4bc3-9482-efb17eca7ccd",
+                            Name = "Dev",
+                            NormalizedName = "DEV"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -211,6 +234,75 @@ namespace UpdaterServer.Migrations.IdentityAppDb
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("UpdaterServer.Domain.Enties.Project", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Author")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("CurrentVersion")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("ExeFile")
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("IsWinService")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("UpdateTime")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("UserEmail")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Projects");
+                });
+
+            modelBuilder.Entity("UpdaterServer.Domain.Enties.ReleaseAssembly", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("PatchNote")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Path")
+                        .HasColumnType("TEXT");
+
+                    b.Property<Guid?>("ReleaseAssemblyId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("ReleaseDate")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("UpdateTime")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("UserEmail")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Version")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ReleaseAssemblyId");
+
+                    b.ToTable("ReleaseAssemblies");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -260,6 +352,20 @@ namespace UpdaterServer.Migrations.IdentityAppDb
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("UpdaterServer.Domain.Enties.ReleaseAssembly", b =>
+                {
+                    b.HasOne("UpdaterServer.Domain.Enties.Project", "Project")
+                        .WithMany("ReleaseAssemblies")
+                        .HasForeignKey("ReleaseAssemblyId");
+
+                    b.Navigation("Project");
+                });
+
+            modelBuilder.Entity("UpdaterServer.Domain.Enties.Project", b =>
+                {
+                    b.Navigation("ReleaseAssemblies");
                 });
 #pragma warning restore 612, 618
         }

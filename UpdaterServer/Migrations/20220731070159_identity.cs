@@ -3,9 +3,9 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace UpdaterServer.Migrations.IdentityAppDb
+namespace UpdaterServer.Migrations
 {
-    public partial class Identity : Migration
+    public partial class identity : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -153,6 +153,21 @@ namespace UpdaterServer.Migrations.IdentityAppDb
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
+
+            migrationBuilder.InsertData(
+                table: "AspNetRoles",
+                columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
+                values: new object[] { "0f6936eb-9561-4929-a033-d6745006fecf", "459459c5-b98d-4709-a847-40e78e971bbb", "Viewer", "VIEWER" });
+
+            migrationBuilder.InsertData(
+                table: "AspNetRoles",
+                columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
+                values: new object[] { "7eab3ec6-64d9-468b-9258-bcaf236ab138", "478fe6b8-3706-4aa4-bfc4-527514bc976d", "Admin", "ADMIN" });
+
+            migrationBuilder.InsertData(
+                table: "AspNetRoles",
+                columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
+                values: new object[] { "ff0828de-ac85-46d0-b29f-dd8a7966792a", "35ed5bd1-4d73-4bc3-9482-efb17eca7ccd", "Dev", "DEV" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",

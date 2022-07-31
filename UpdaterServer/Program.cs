@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using UpdaterServer.Services.TcpServices;
 using System.Text.Json.Serialization;
 using UpdaterServer.Utilities;
+using UpdaterServer.Services.Common;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -28,20 +29,28 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 });
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddAuth(builder);
+builder.Services.AddSingleton<IEmailSender, EmailSender>();
+builder.Services.AddCors(setup =>
+{
+	setup.AddDefaultPolicy(builder =>
+	{
+		builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();
+	});
+});
+
 var app = builder.Build();
 
 //app.Services.GetRequiredService<ITcpServerService>().Run();
 
-await app.DbInit<AppDbContext>();
-await app.DbInit<IdentityAppDbContext>();
+await app.DbInitAsync<AppDbContext>();
 
 if (app.Environment.IsDevelopment())
 {
 	app.UseSwagger();
 	app.UseSwaggerUI();
 }
-app.UseHttpsRedirection();
-
+//app.UseHttpsRedirection();
+app.UseCors();
 app.UseAuthentication();
 
 app.UseAuthorization();

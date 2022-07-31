@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using Microsoft.AspNetCore.Authentication.Certificate;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -25,8 +26,8 @@ namespace UpdaterServer.Utilities
 				options.Password.RequireUppercase = false;
 				options.Password.RequireNonAlphanumeric = false;
 				options.Password.RequireDigit = false;
-			}).AddEntityFrameworkStores<IdentityAppDbContext>().AddDefaultTokenProviders();
-			services.AddDbContext<IdentityAppDbContext>(options =>
+			}).AddEntityFrameworkStores<AppDbContext>().AddDefaultTokenProviders();
+			services.AddDbContext<AppDbContext>(options =>
 			{
 				string connectionstring = builder.CreateDbPath("IdentityConnection");
 				options.UseSqlite(connectionstring);

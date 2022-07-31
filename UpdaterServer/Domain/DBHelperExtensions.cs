@@ -22,7 +22,7 @@ namespace UpdaterServer.Domain
 			return connectionstring;
 		}
 
-		public static async Task DbInit<T>(this WebApplication app) where T : DbContext
+		public static async Task DbInitAsync<T>(this WebApplication app) where T : DbContext
 		{
 			using (var scope = app.Services.CreateScope())
 			{
