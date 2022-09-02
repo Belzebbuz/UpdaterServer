@@ -14,6 +14,6 @@ public class LNC_010_Handler : IRequestHandler<LNC_010, IResponse>
 	}
 	public async Task<IResponse> Handle(LNC_010 request, CancellationToken cancellationToken)
 	{
-		return new LNC_004(await _repository.GetByIdAsync(request.Id));
+		return new LNC_004(await _repository.FirstOrDefaultAsync(new LNC_010_Spec.FindByIdProjectSpec(request.Id)));
 	}
 }

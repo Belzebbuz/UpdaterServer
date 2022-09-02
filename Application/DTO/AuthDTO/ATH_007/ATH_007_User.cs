@@ -2,14 +2,12 @@
 
 public class ATH_007_User
 {
-	public ATH_007_User(string id, string email, IList<string> roles)
+	public ATH_007_User(string id, string email)
 	{
 		Id = id;
 		Email = email;
-		Roles = roles;
 	}
 
 	public string Id { get; }
 	public string Email { get; }
-	public IList<string> Roles { get; }
 }

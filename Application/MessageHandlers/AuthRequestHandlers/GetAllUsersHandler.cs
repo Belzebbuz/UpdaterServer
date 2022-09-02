@@ -1,7 +1,5 @@
-﻿using Application.Data;
-using Application.DTO.AuthDTO.ATH_007;
+﻿using Application.DTO.AuthDTO.ATH_007;
 using Domain.Entities.Auth;
-using Microsoft.AspNetCore.Identity;
 
 namespace Application.MessageHandlers.AuthMessages;
 
@@ -19,7 +17,7 @@ public class GetAllUsersHandler : IRequestHandler<GetAllUsersRequest, IResponse>
     public async Task<IResponse> Handle(GetAllUsersRequest request, CancellationToken cancellationToken)
     {
         var users = await _readRepository.ListAsync();
-        var usersDTO = users.Select(x => new ATH_007_User(x.Id, x.Email, _userManager.GetRolesAsync(x).Result)).ToList();
+        var usersDTO = users.Select(x => new ATH_007_User(x.Id, x.Email)).ToList();
         return new ATH_007(usersDTO);
     }
 }

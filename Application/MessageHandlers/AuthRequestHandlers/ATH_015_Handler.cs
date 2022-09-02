@@ -1,7 +1,6 @@
 ﻿using Application.DTO.AuthDTO.ATH_000;
 using Application.DTO.AuthDTO.ATH_013;
 using Application.DTO.AuthDTO.ATH_015;
-using Application.DTO.AuthDTO.ATH_016;
 using Application.DTO.AuthDTO.ATH_400;
 using Domain.Entities.Auth;
 
@@ -33,6 +32,6 @@ public class ATH_015_Handler : IRequestHandler<ATH_015, IResponse>
 
 		role.UserGroups.Add(userGroup);
 		await _roleRepository.UpdateAsync(role);
-		return new ATH_016(role.Id, role.Name, role.UserGroups, role.UserRights);
+		return new ATH_000(200);
 	}
 }

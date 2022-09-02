@@ -44,7 +44,7 @@ public class ReleasesController : BaseApiController
 	[HttpPost("addRelease/{id}")]
 	[RequestFormLimits(MultipartBodyLengthLimit = long.MaxValue)]
 	[RequestSizeLimit(long.MaxValue)]
-	[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin,Dev")]
+	[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
 	public async Task<IActionResult> CreateNewReleaseAsync(Guid Id, [FromForm] IFormFile file)
 	{
 		var response = await Mediator.Send(new LNC_010(Id));
@@ -101,10 +101,10 @@ public class ReleasesController : BaseApiController
 	}
 
 	[HttpPost("patchNote")]
-	[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin,Dev")]
+	[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
 	public async Task<IResponse> CreatePatchNoteAsync(LNC_012 request) => await Mediator.Send(request);
 
 	[HttpDelete("patchNote/{id:guid}")]
-	[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin,Dev")]
+	[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
 	public async Task<IResponse> DeletePatchNoteAsync(Guid id) => await Mediator.Send(new LNC_013(id));
 }

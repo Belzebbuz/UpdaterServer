@@ -19,21 +19,22 @@ public class AppsController : BaseApiController
 	public async Task<IResponse> GetAllAppsAsync() => await Mediator.Send(new GetAllProjectsRequest());
 
 	[HttpGet("{id}")]
+	[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
 	public async Task<IResponse> GetProjectAsync(Guid id) => await Mediator.Send(new LNC_010(id));
 
 	[HttpPost("filter")]
 	public async Task<IResponse> GetAppsByWinIsWinService(LNC_005 request) => await Mediator.Send(request);
 
 	[HttpPost]
-	[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin,Dev")]
+	[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
 	public async Task<IResponse> CreateAppAsync(LNC_001 request) => await Mediator.Send(request);
 
 	[HttpPut]
-	[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin,Dev")]
+	[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
 	public async Task<IResponse> UpdateAppInfoAsync(LNC_006 request) => await Mediator.Send(request);
 
 	[HttpDelete("{id:guid}")]
-	[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin,Dev")]
+	[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
 	public async Task<IResponse> DeleteAppAsync(Guid id) => await Mediator.Send(new LNC_007(id));
 
 }

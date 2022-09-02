@@ -1,4 +1,5 @@
-﻿using Application.DTO.LauncherDTO.LNC_004;
+﻿using Application.DTO.LauncherDTO.LNC_000;
+using Application.DTO.LauncherDTO.LNC_004;
 using Application.DTO.LauncherDTO.LNC_006;
 using Application.DTO.LauncherDTO.LNC_400;
 using Microsoft.AspNetCore.Http;
@@ -30,6 +31,6 @@ public class LNC_006_Handler : IRequestHandler<LNC_006, IResponse>
 		app.UserEmail = user;
 		app.UpdateTime = DateTime.Now;
 		await _repository.UpdateAsync(app);
-		return new LNC_004(app);
+		return new LNC_000(200);
 	}
 }

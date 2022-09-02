@@ -18,7 +18,7 @@ public class LNC_012_Handler : IRequestHandler<LNC_012, IResponse>
 	}
 	public async Task<IResponse> Handle(LNC_012 request, CancellationToken cancellationToken)
 	{
-		var release = await _repository.GetByIdAsync(request.ReleaseId);
+		var release = await _repository.FirstOrDefaultAsync(new LNC_012_Spec.FindByIdRelease(request.ReleaseId));
 		if (release == null)
 			return new LNC_400("Release not found!");
 		if (string.IsNullOrEmpty(request.Text))

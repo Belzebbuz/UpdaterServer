@@ -5,17 +5,14 @@ using Infrastructure;
 using Infrastructure.Data;
 using Application;
 using UpdaterServer.Middlewares;
+using System.Net;
+using Microsoft.AspNetCore.Server.Kestrel.Core;
+using Microsoft.AspNetCore.Server.Kestrel.Https;
+using Microsoft.AspNetCore.HttpOverrides;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.WebHost.ConfigureKestrel(options =>
-{
-	options.ListenAnyIP(5122);
-	options.ListenAnyIP(5121, listOpt =>
-	{
-		listOpt.UseHttps(builder.Configuration["CertPath"], builder.Configuration["CertPassword"]);
-	});
-});
+
 builder.Services.AddMediatR(typeof(Program).Assembly);
 builder.Services.AddControllers().AddJsonOptions(options =>
 {
@@ -45,7 +42,10 @@ if (app.Environment.IsDevelopment())
 	app.UseSwagger();
 	app.UseSwaggerUI();
 }
-app.UseHttpsRedirection();
+app.UseForwardedHeaders(new ForwardedHeadersOptions
+{
+	ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
+});
 app.UseCors();
 app.UseAuthentication();
 app.UseAuthorization();

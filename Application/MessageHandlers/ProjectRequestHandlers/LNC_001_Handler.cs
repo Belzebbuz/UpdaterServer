@@ -1,4 +1,5 @@
 ﻿using Application.Data;
+using Application.DTO.LauncherDTO.LNC_000;
 using Application.DTO.LauncherDTO.LNC_001;
 using Application.DTO.LauncherDTO.LNC_002;
 using Application.DTO.LauncherDTO.LNC_400;
@@ -36,10 +37,11 @@ public class LNC_001_Handler : IRequestHandler<LNC_001, IResponse>
 				IsWinService = request.IsWinService,
 				UserEmail = user,
 				Author = user,
-				UpdateTime = DateTime.Now
+				UpdateTime = DateTime.Now,
+				CurrentVersion = "0.0.0.0"
 			};
 			await _repository.AddAsync(newApp);
-			return new LNC_002(newApp.Id);
+			return new LNC_000(200);
 		}
 	}
 }

@@ -1,5 +1,6 @@
 ﻿using Application.DTO.LauncherDTO.LNC_009;
 using Application.DTO.LauncherDTO.LNC_400;
+using Ardalis.Specification;
 using Microsoft.AspNetCore.Http;
 using System.Security.Claims;
 
@@ -16,6 +17,11 @@ public class CreateReleaseAssemblyRequest : IRequest<IResponse>
 		Path = path;
 		Version = version;
 	}
+
+	public class FindByIdProjectSpec : Specification<Project>, ISingleResultSpecification
+	{
+		public FindByIdProjectSpec(Guid id) => Query.Where(x => x.Id == id).Include(x => x.ReleaseAssemblies);
+	}
 }
 public class CreateReleaseHandler : IRequestHandler<CreateReleaseAssemblyRequest, IResponse>
 {
@@ -30,7 +36,7 @@ public class CreateReleaseHandler : IRequestHandler<CreateReleaseAssemblyRequest
 	public async Task<IResponse> Handle(CreateReleaseAssemblyRequest request, CancellationToken cancellationToken)
 	{
 		var user = _httpContextAccessor?.HttpContext?.User.FindFirstValue(ClaimTypes.Email);
-		var app = await _repository.GetByIdAsync(request.AppId);
+		var app = await _repository.FirstOrDefaultAsync(new CreateReleaseAssemblyRequest.FindByIdProjectSpec(request.AppId));
 		if (app == null)
 			return new LNC_400("Project not found!");
 

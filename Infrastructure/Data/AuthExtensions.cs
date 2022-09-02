@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using System.Text;
 using Microsoft.IdentityModel.Tokens;
 using Domain.Entities.Auth;
+using Microsoft.AspNetCore.Authentication.Certificate;
 
 namespace Infrastructure.Data;
 
@@ -22,7 +23,7 @@ public static class AuthExtensions
 			options.Password.RequireNonAlphanumeric = false;
 			options.Password.RequireDigit = false;
 		}).AddEntityFrameworkStores<AppDbContext>().AddDefaultTokenProviders();
-
+		
 		services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 		   .AddJwtBearer(options =>
 		   {
